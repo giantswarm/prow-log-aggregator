@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/giantswarm/micrologger"
+
 	"github.com/giantswarm/prow-log-aggregator/service"
 )
 
