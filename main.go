@@ -112,7 +112,10 @@ func mainWithError() error {
 	daemonCommand.PersistentFlags().String(f.Kubeconfig.Kubeconfig, "kubeconfig", "Kubectl config file (default: $HOME/.kube/config).")
 	daemonCommand.PersistentFlags().String(f.Kubeconfig.Namespace, "namespace", "Namespace to use (default: from $KUBECONFIG).")
 
-	newCommand.CobraCommand().Execute()
+	err = newCommand.CobraCommand().Execute()
+	if err != nil {
+		return microerror.Mask(err)
+	}
 
 	return nil
 }
