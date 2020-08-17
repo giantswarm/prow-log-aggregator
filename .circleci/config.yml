@@ -17,6 +17,7 @@ workflows:
       - architect/push-to-docker:
           name: push-to-quay
           image: "quay.io/giantswarm/prow-log-aggregator"
+          context: architect
           username_envar: "QUAY_USERNAME"
           password_envar: "QUAY_PASSWORD"
           requires:
