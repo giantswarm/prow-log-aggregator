@@ -79,7 +79,7 @@ func (e *Endpoint) Decoder() kithttp.DecodeRequestFunc {
 
 func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 	return func(ctx context.Context, w http.ResponseWriter, response interface{}) error {
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(200)
 
 		return json.NewEncoder(w).Encode(response)
