@@ -29,6 +29,12 @@ func (l logAggregator) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	runName := strings.TrimPrefix(r.URL.Path, "/")
 	args = append(args, []string{"pipelinerun", "logs", runName}...)
 
+	/*
+		Make gosec exception as we call the tekton binary directly.
+		Purpose of the call is to retrieve logs from tekton pipeline pods.
+		No disruptive operation is possible.
+		Reference issue for gosec exclusion: https://github.com/securego/gosec/issues/106
+	*/
 	// #nosec
 	cmd := exec.CommandContext(r.Context(), "tkn", args...)
 	cmd.Stdout = w
