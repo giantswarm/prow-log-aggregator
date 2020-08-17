@@ -29,6 +29,7 @@ func (l logAggregator) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	runName := strings.TrimPrefix(r.URL.Path, "/")
 	args = append(args, []string{"pipelinerun", "logs", runName}...)
 
+	// #nosec
 	cmd := exec.CommandContext(r.Context(), "tkn", args...)
 	cmd.Stdout = w
 	cmd.Stderr = w
