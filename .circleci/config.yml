@@ -4,11 +4,23 @@ orbs:
   architect: giantswarm/architect@0.10.2
 
 workflows:
-  test:
+  build:
     jobs:
-      - architect/go-test:
-          name: go-test
+      - architect/go-build:
+          name: go-build
+          binary: prow-log-aggregator
+          resource_class: large
           filters:
-            # Trigger job also on git tag.
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-docker:
+          name: push-to-quay
+          image: "quay.io/giantswarm/prow-log-aggregator"
+          username_envar: "QUAY_USERNAME"
+          password_envar: "QUAY_PASSWORD"
+          requires:
+            - go-build
+          filters:
             tags:
               only: /^v.*/
