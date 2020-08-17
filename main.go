@@ -1,57 +1,118 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"log"
-	"net/http"
-	"os/exec"
-	"strings"
+	"math/rand"
+	"time"
+
+	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/microkit/command"
+	microserver "github.com/giantswarm/microkit/server"
+	"github.com/giantswarm/micrologger"
+	"github.com/spf13/viper"
+
+	"github.com/giantswarm/prow-log-aggregator/flag"
+	"github.com/giantswarm/prow-log-aggregator/pkg/project"
+	"github.com/giantswarm/prow-log-aggregator/server"
+	"github.com/giantswarm/prow-log-aggregator/service"
 )
 
-type logAggregator struct {
-	context    string
-	kubeconfig string
-	namespace  string
-}
+var (
+	f *flag.Flag = flag.New()
+)
 
-func (l logAggregator) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var args []string
-	if l.namespace != "" {
-		args = append(args, []string{"-n", l.namespace}...)
-	}
-	if l.context != "" {
-		args = append(args, []string{"-c", l.context}...)
-	}
-	if l.kubeconfig != "" {
-		args = append(args, []string{"-k", l.kubeconfig}...)
-	}
-	runName := strings.TrimPrefix(r.URL.Path, "/")
-	args = append(args, []string{"pipelinerun", "logs", runName}...)
-
-	/*
-		Make gosec exception as we call the tekton binary directly.
-		Purpose of the call is to retrieve logs from tekton pipeline pods.
-		No disruptive operation is possible.
-		Reference issue for gosec exclusion: https://github.com/securego/gosec/issues/106
-	*/
-	// #nosec
-	cmd := exec.CommandContext(r.Context(), "tkn", args...)
-	cmd.Stdout = w
-	cmd.Stderr = w
-	err := cmd.Run()
-	if err != nil {
-		_, _ = fmt.Fprintf(w, "tkn failed: %s", err)
-	}
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
 
 func main() {
-	var handler logAggregator
-	flag.StringVar(&handler.context, "context", "", "name of the kubeconfig context to use (default: kubectl config current-context)")
-	flag.StringVar(&handler.kubeconfig, "kubeconfig", "", "kubectl config file (default: $HOME/.kube/config)")
-	flag.StringVar(&handler.namespace, "namespace", "", "namespace to use (default: from $KUBECONFIG)")
-	flag.Parse()
-	http.Handle("/", handler)
-	s := &http.Server{Addr: ":8080"}
-	log.Fatal(s.ListenAndServe())
+	err := mainWithError()
+	if err != nil {
+		panic(fmt.Sprintf("%#v\n", microerror.Mask(err)))
+	}
+}
+
+func mainWithError() error {
+	var err error
+
+	// Create a new logger which is used by all packages.
+	var newLogger micrologger.Logger
+	{
+		newLogger, err = micrologger.New(micrologger.Config{})
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	// We define a server factory to create the custom server once all command
+	// line flags are parsed and all microservice configuration is storted out.
+	newServerFactory := func(v *viper.Viper) microserver.Server {
+
+		// Create a new custom service which implements business logic.
+		var newService *service.Service
+		{
+			serviceConfig := service.Config{
+				Description: project.Description(),
+				GitCommit:   project.GitSHA(),
+				Name:        project.Name(),
+				Source:      project.Source(),
+				Version:     project.Version(),
+			}
+
+			newService, err = service.New(serviceConfig)
+			if err != nil {
+				panic(fmt.Sprintf("%#v", err))
+			}
+		}
+
+		// Create a new custom server which bundles our endpoints.
+		var newServer microserver.Server
+		{
+			serverConfig := server.Config{
+				Logger:  newLogger,
+				Service: newService,
+				Viper:   v,
+				Flag:    f,
+
+				ProjectName: project.Name(),
+			}
+
+			newServer, err = server.New(serverConfig)
+			if err != nil {
+				panic(fmt.Sprintf("%#v", err))
+			}
+		}
+
+		return newServer
+	}
+
+	// Create a new microkit command which manages our custom microservice.
+	var newCommand command.Command
+	{
+		c := command.Config{
+			Logger:        newLogger,
+			ServerFactory: newServerFactory,
+
+			Description: project.Description(),
+			GitCommit:   project.GitSHA(),
+			Name:        project.Name(),
+			Source:      project.Source(),
+			Version:     project.Version(),
+		}
+
+		newCommand, err = command.New(c)
+		if err != nil {
+			return microerror.Mask(err)
+		}
+	}
+
+	daemonCommand := newCommand.DaemonCommand().CobraCommand()
+
+	daemonCommand.PersistentFlags().String(f.Kubeconfig.Context, "context", "Name of the kubeconfig context to use (default: kubectl config current-context)")
+	daemonCommand.PersistentFlags().String(f.Kubeconfig.Kubeconfig, "kubeconfig", "Kubectl config file (default: $HOME/.kube/config).")
+	daemonCommand.PersistentFlags().String(f.Kubeconfig.Namespace, "namespace", "Namespace to use (default: from $KUBECONFIG).")
+
+	newCommand.CobraCommand().Execute()
+
+	return nil
 }
