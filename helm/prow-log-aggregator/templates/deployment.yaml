@@ -22,5 +22,4 @@ spec:
         - name: log-aggregator
           image: "{{ .Values.Installation.V1.Registry.Domain }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
           args:
-            - -namespace
-            - nightly
+            - --namespace=nightly
