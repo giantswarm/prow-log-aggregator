@@ -23,4 +23,4 @@ spec:
           image: "{{ .Values.Installation.V1.Registry.Domain }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
           args:
             - daemon
-            - --namespace=nightly
+            - --kubeconfig.namespace=nightly
