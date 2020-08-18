@@ -1,8 +1,8 @@
 package searcher
 
 import (
+	"bytes"
 	"context"
-	"encoding/json"
 	"net/http"
 	"os/exec"
 	"strings"
@@ -80,9 +80,12 @@ func (e *Endpoint) Decoder() kithttp.DecodeRequestFunc {
 func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 	return func(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.WriteHeader(200)
-
-		return json.NewEncoder(w).Encode(response)
+		b, ok := response.([]byte)
+		if !ok {
+			return microerror.Mask(errors.BadRequestError)
+		}
+		_, err := w.Write(b)
+		return microerror.Mask(err)
 	}
 }
 
@@ -106,6 +109,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		runName := strings.TrimPrefix(pipelineID, "/")
 		args = append(args, []string{"pipelinerun", "logs", runName}...)
 
+		var b bytes.Buffer
 		/*
 			Make gosec exception as we call the tekton binary directly.
 			Purpose of the call is to retrieve logs from tekton pipeline pods.
@@ -113,12 +117,15 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 			Reference issue for gosec exclusion: https://github.com/securego/gosec/issues/106
 		*/
 		// #nosec
-		out, err := exec.CommandContext(ctx, "tkn", args...).Output()
+		cmd := exec.CommandContext(ctx, "tkn", args...)
+		cmd.Stderr = &b
+		cmd.Stdout = &b
+		err := cmd.Run()
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 
-		return out, nil
+		return b.Bytes(), nil
 	}
 }
 

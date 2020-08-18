@@ -5,9 +5,7 @@ metadata:
   namespace: prow
 spec:
   ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 8080
+  - port: 8000
   selector:
     app: log-aggregator
   type: ClusterIP

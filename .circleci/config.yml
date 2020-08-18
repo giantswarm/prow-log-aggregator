@@ -16,12 +16,38 @@ workflows:
 
       - architect/push-to-docker:
           name: push-to-quay
-          image: "quay.io/giantswarm/prow-log-aggregator"
           context: architect
+          image: "quay.io/giantswarm/prow-log-aggregator"
           username_envar: "QUAY_USERNAME"
           password_envar: "QUAY_PASSWORD"
           requires:
             - go-build
           filters:
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-catalog:
+          name: push-to-app-catalog-master
+          context: architect
+          app_catalog: "control-plane-catalog"
+          app_catalog_test: "control-plane-test-catalog"
+          chart: "prow-log-aggregator"
+          requires:
+            - push-to-quay
+          filters:
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-to-conformance-app-collection
+          context: architect
+          app_name: "prow-log-aggregator"
+          app_collection_repo: "conformance-app-collection"
+          unique: "true"
+          requires:
+            - push-to-app-catalog-master
+          filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
