@@ -108,9 +108,9 @@ func mainWithError() error {
 
 	daemonCommand := newCommand.DaemonCommand().CobraCommand()
 
-	daemonCommand.PersistentFlags().String(f.Kubeconfig.Context, "context", "Name of the kubeconfig context to use (default: kubectl config current-context)")
-	daemonCommand.PersistentFlags().String(f.Kubeconfig.Kubeconfig, "kubeconfig", "Kubectl config file (default: $HOME/.kube/config).")
-	daemonCommand.PersistentFlags().String(f.Kubeconfig.Namespace, "namespace", "Namespace to use (default: from $KUBECONFIG).")
+	daemonCommand.PersistentFlags().String(f.Kubeconfig.Context, "", "Name of the kubeconfig context to use (default: kubectl config current-context)")
+	daemonCommand.PersistentFlags().String(f.Kubeconfig.Kubeconfig, "", "Kubectl config file (default: $HOME/.kube/config).")
+	daemonCommand.PersistentFlags().String(f.Kubeconfig.Namespace, "", "Namespace to use (default: from $KUBECONFIG).")
 
 	err = newCommand.CobraCommand().Execute()
 	if err != nil {
