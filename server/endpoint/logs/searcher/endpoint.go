@@ -83,7 +83,7 @@ func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 		w.WriteHeader(200)
 		b, ok := response.([]byte)
 		if !ok {
-			microerror.Mask(errors.BadRequestError)
+			return microerror.Mask(errors.BadRequestError)
 		}
 		_, err := w.Write(b)
 		return microerror.Mask(err)
