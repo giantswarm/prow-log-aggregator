@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Initial implementation.
+- CI/CD automation.
 
 
 [Unreleased]: https://github.com/giantswarm/prow-log-aggregator/tree/master
