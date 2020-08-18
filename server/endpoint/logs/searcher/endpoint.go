@@ -106,6 +106,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		runName := strings.TrimPrefix(pipelineID, "/")
 		args = append(args, []string{"pipelinerun", "logs", runName}...)
 
+		e.logger.Log(args)
 		/*
 			Make gosec exception as we call the tekton binary directly.
 			Purpose of the call is to retrieve logs from tekton pipeline pods.
