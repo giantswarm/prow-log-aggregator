@@ -80,7 +80,6 @@ func (e *Endpoint) Decoder() kithttp.DecodeRequestFunc {
 func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 	return func(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.WriteHeader(200)
 		b, ok := response.([]byte)
 		if !ok {
 			return microerror.Mask(errors.BadRequestError)
@@ -126,7 +125,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 			return nil, microerror.Mask(err)
 		}
 
-		return b.String(), nil
+		return b.Bytes(), nil
 	}
 }
 
