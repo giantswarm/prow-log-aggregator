@@ -16,8 +16,8 @@ workflows:
 
       - architect/push-to-docker:
           name: push-to-quay
-          image: "quay.io/giantswarm/prow-log-aggregator"
           context: architect
+          image: "quay.io/giantswarm/prow-log-aggregator"
           username_envar: "QUAY_USERNAME"
           password_envar: "QUAY_PASSWORD"
           requires:
@@ -26,32 +26,28 @@ workflows:
             tags:
               only: /^v.*/
 
-      # Ensure that for every commit to master and for every
-      # release tag, there is an app version in the catalog.
       - architect/push-to-app-catalog:
           name: push-to-app-catalog-master
-          app_catalog: "conformance-catalog"
-          app_catalog_test: "conformance-test-catalog"
-          chart: "prow-log-aggregator"
           context: architect
+          app_catalog: "control-plane-catalog"
+          app_catalog_test: "control-plane-test-catalog"
+          chart: "prow-log-aggregator"
           requires:
             - push-to-quay
           filters:
-            branches:
-              only: master
             tags:
               only: /^v.*/
 
-      # Ensure that for every commit (branch other than master)
-      # there is an app version in the test catalog.
-      - architect/push-to-app-catalog:
-          name: push-to-app-catalog-pr
-          app_catalog: "conformance-catalog"
-          app_catalog_test: "conformance-test-catalog"
-          chart: "prow-log-aggregator"
+      - architect/push-to-app-collection:
+          name: push-to-conformance-app-collection
           context: architect
+          app_name: "prow-log-aggregator"
+          app_collection_repo: "conformance-app-collection"
+          unique: "true"
           requires:
-            - push-to-quay
+            - push-to-app-catalog-master
           filters:
             branches:
-              ignore: master
+              ignore: /.*/
+            tags:
+              only: /^v.*/
