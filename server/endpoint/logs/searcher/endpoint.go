@@ -3,7 +3,6 @@ package searcher
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"net/http"
 	"os/exec"
 	"strings"
@@ -82,8 +81,12 @@ func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 	return func(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(200)
-
-		return json.NewEncoder(w).Encode(response)
+		b, ok := response.([]byte)
+		if !ok {
+			microerror.Mask(errors.BadRequestError)
+		}
+		_, err := w.Write(b)
+		return microerror.Mask(err)
 	}
 }
 
