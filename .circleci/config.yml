@@ -33,6 +33,7 @@ workflows:
           app_catalog: "conformance-catalog"
           app_catalog_test: "conformance-test-catalog"
           chart: "prow-log-aggregator"
+          context: architect
           requires:
             - push-to-quay
           filters:
@@ -48,6 +49,7 @@ workflows:
           app_catalog: "conformance-catalog"
           app_catalog_test: "conformance-test-catalog"
           chart: "prow-log-aggregator"
+          context: architect
           requires:
             - push-to-quay
           filters:
