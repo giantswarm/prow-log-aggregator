@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: prow
+  namespace: test-infra
   name: log-aggregator
   labels:
     app: log-aggregator
