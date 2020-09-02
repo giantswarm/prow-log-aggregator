@@ -37,17 +37,3 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-
-      - architect/push-to-app-collection:
-          name: push-to-conformance-app-collection
-          context: architect
-          app_name: "prow-log-aggregator"
-          app_collection_repo: "conformance-app-collection"
-          unique: "true"
-          requires:
-            - push-to-app-catalog-master
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
