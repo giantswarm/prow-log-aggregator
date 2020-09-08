@@ -9,7 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Make kubeconfig flag configurable.
+
 ## [0.0.2] - 2020-09-02
+
+### Changed
+
+- Move namespace to `test-infra`.
 
 ## [0.0.1] - 2020-08-18
 
