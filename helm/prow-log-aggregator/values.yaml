@@ -1,5 +1,5 @@
 kubeconfig:
-  namespace: "test-infra"
+  namespace: "test-workloads"
 image:
   name: "giantswarm/prow-log-aggregator"
   tag: "[[ .Version ]]"
