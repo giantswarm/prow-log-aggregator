@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Add PSP and securityContext so pod can start in restricted namespaces.
+
 ### Changed
 
 - Make kubeconfig flag configurable.
