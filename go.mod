@@ -11,3 +11,8 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/spf13/viper v1.7.1
 )
+
+replace (
+	github.com/coreos/etcd v3.3.10+incompatible => github.com/coreos/etcd v3.3.25+incompatible
+	github.com/coreos/etcd v3.3.13+incompatible => github.com/coreos/etcd v3.3.25+incompatible
+)
