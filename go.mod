@@ -9,7 +9,7 @@ require (
 	github.com/giantswarm/micrologger v0.5.0
 	github.com/go-kit/kit v0.12.0
 	github.com/gorilla/mux v1.8.0
-	github.com/spf13/viper v1.9.0
+	github.com/spf13/viper v1.10.1
 )
 
 replace (
