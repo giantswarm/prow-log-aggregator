@@ -122,6 +122,9 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		cmd.Stdout = &b
 		err := cmd.Run()
 		if err != nil {
+			e.logger.Debugf(ctx, "command: %#q was called with args: %#q", "tkn", strings.Join(cmd.Args, " "))
+			e.logger.Debugf(ctx, "stdout and stderr was: %#q", b.String())
+			e.logger.Debugf(ctx, "command: %#q was called with args: %#q", "tkn", strings.Join(cmd.Args, " "))
 			return nil, microerror.Mask(err)
 		}
 
