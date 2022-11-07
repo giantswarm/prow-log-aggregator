@@ -1,1 +1,24 @@
+# pkg:golang/github.com/hashicorp/consul/sdk@v0.8.0
+# pkg:golang/github.com/hashicorp/consul/api@v1.10.1
+CVE-2022-29153 until=2022-12-31
+CVE-2021-41803 until=2022-12-31
+CVE-2022-24687 until=2022-12-31
 
+# pkg:golang/github.com/nats-io/nats-server/v2@v2.5.0
+CVE-2022-24450 until=2022-12-31
+CVE-2022-29946 until=2022-12-31
+CVE-2022-26652 until=2022-12-31
+CVE-2022-28357 until=2022-12-31
+
+# pkg:golang/github.com/nats-io/jwt@v1.2.2
+CVE-2021-3127 until=2022-12-31
+
+# pkg:golang/github.com/pkg/sftp@v1.10.1
+sonatype-2019-0890 until=2022-12-31
+
+# pkg:golang/github.com/nats-io/nats-server/v2@v2.5.0
+CVE-2022-42709 until=2022-12-31
+CVE-2022-42708 until=2022-12-31
+
+# pkg:golang/github.com/prometheus/client_golang@v1.11.0
+CVE-2022-21698 until=2022-12-31
