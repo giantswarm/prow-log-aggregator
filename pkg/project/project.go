@@ -5,7 +5,7 @@ var (
 	gitSHA             = "n/a"
 	name        string = "prow-log-aggregator"
 	source      string = "https://github.com/giantswarm/prow-log-aggregator"
-	version            = "0.0.3-dev"
+	version            = "0.1.0"
 )
 
 func Description() string {
