@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2023-01-19
+
 ### Fixed
 
 - Add PSP and securityContext so pod can start in restricted namespaces.
@@ -31,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI/CD automation.
 
 
-[Unreleased]: https://github.com/giantswarm/prow-log-aggregator/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/giantswarm/prow-log-aggregator/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/giantswarm/prow-log-aggregator/compare/v0.0.2...v0.1.0
 [0.0.2]: https://github.com/giantswarm/prow-log-aggregator/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/giantswarm/prow-log-aggregator/releases/tag/v0.0.1
