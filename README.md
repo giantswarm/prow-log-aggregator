@@ -4,7 +4,7 @@
 
 This is a small tool to extract logs from our Tekton pipeline into [Prow dashboards](https://prow.giantswarm.io/).
 
-It wraps the Tekton CLI command line tool under the `logs` endpoint to fetch logs from Tekton pipeline runs. 
+It wraps the Tekton CLI command line tool under the `logs` endpoint to fetch logs from Tekton pipeline runs.
 
 ## Related repositories
 
