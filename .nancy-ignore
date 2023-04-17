@@ -5,5 +5,8 @@ CVE-2022-29153 until=2023-06-30
 CVE-2022-29153 until=2023-06-30
 CVE-2021-41803 until=2023-06-30
 
+# pkg:golang/golang.org/x/net@v0.5.0
+CVE-2022-41723 until=2023-06-30
+
 # pkg:golang/github.com/nats-io/jwt@v1.2.2
 CVE-2021-3127 until=2023-06-30
