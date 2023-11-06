@@ -8,7 +8,7 @@ require (
 	github.com/giantswarm/microkit v1.0.0
 	github.com/giantswarm/micrologger v1.0.0
 	github.com/go-kit/kit v0.13.0
-	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/mux v1.8.1
 	github.com/spf13/viper v1.17.0
 )
 
