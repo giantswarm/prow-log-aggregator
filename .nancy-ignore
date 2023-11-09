@@ -4,3 +4,6 @@ CVE-2022-29153 until=2023-12-31
 # pkg:golang/github.com/hashicorp/consul/sdk@v0.11.0
 CVE-2022-29153 until=2023-12-31
 CVE-2021-41803 until=2023-12-31
+
+# pkg:golang/github.com/nats-io/nkeys@v0.4.5
+CVE-2023-46129 until=2023-12-01

@@ -10,3 +10,6 @@ Installation:
 project:
   branch: "[[ .Branch ]]"
   commit: "[[ .SHA ]]"
+
+podSecurityStandards:
+  enforced: false
