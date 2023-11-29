@@ -24,11 +24,11 @@ workflows:
               only: /^v.*/
 
       - architect/push-to-app-catalog:
-          name: push-to-app-catalog-master
+          name: push-to-app-catalog
           context: architect
-          app_catalog: "control-plane-catalog"
-          app_catalog_test: "control-plane-test-catalog"
-          chart: "prow-log-aggregator"
+          app_catalog: control-plane-catalog
+          app_catalog_test: control-plane-test-catalog
+          chart: prow-log-aggregator
           requires:
             - push-to-registries
           filters:
