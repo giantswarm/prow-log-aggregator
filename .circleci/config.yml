@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@4.35.1
+  architect: giantswarm/architect@4.35.5
 
 workflows:
   build:
@@ -14,12 +14,9 @@ workflows:
             tags:
               only: /^v.*/
 
-      - architect/push-to-docker:
-          name: push-to-quay
+      - architect/push-to-registries:
           context: architect
-          image: "quay.io/giantswarm/prow-log-aggregator"
-          username_envar: "QUAY_USERNAME"
-          password_envar: "QUAY_PASSWORD"
+          name: push-to-registries
           requires:
             - go-build
           filters:
@@ -27,13 +24,13 @@ workflows:
               only: /^v.*/
 
       - architect/push-to-app-catalog:
-          name: push-to-app-catalog-master
+          name: push-to-app-catalog
           context: architect
-          app_catalog: "control-plane-catalog"
-          app_catalog_test: "control-plane-test-catalog"
-          chart: "prow-log-aggregator"
+          app_catalog: control-plane-catalog
+          app_catalog_test: control-plane-test-catalog
+          chart: prow-log-aggregator
           requires:
-            - push-to-quay
+            - push-to-registries
           filters:
             tags:
               only: /^v.*/
