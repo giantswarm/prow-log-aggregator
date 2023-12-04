@@ -25,5 +25,9 @@ spec:
             - daemon
             - --kubeconfig.namespace={{ .Values.kubeconfig.namespace }}
             - --server.listen.address=http://0.0.0.0:8000
+          securityContext:
+            allowPrivilegeEscalation: false
       securityContext:
         runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
