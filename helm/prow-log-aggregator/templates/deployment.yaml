@@ -27,6 +27,6 @@ spec:
             - --server.listen.address=http://0.0.0.0:8000
       securityContext:
         runAsUser: 1000
-        allowPrivileveEscalation: false
+        allowPrivilegeEscalation: false
         seccompProfile:
           type: RuntimeDefault
