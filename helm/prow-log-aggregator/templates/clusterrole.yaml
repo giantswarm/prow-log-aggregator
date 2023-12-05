@@ -18,7 +18,7 @@ rules:
   - pods/log
   verbs:
   - get
-{{- if not .Values.podSecurityStandards.enforced }}
+{{- if not .Values.global.podSecurityStandards.enforced }}
 - apiGroups:
   - policy
   resourceNames:
