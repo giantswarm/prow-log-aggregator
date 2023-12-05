@@ -11,5 +11,6 @@ project:
   branch: "[[ .Branch ]]"
   commit: "[[ .SHA ]]"
 
-podSecurityStandards:
-  enforced: false
+global:
+  podSecurityStandards:
+    enforced: false
