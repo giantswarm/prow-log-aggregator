@@ -4,3 +4,5 @@ home: https://github.com/giantswarm/prow-log-aggregator
 description: Extract logs from Tekton pipelines into Prow dashboards.
 version: "[[ .Version ]]"
 appVersion: "[[ .AppVersion ]]"
+annotations:
+  application.giantswarm.io/team: honeybadger
