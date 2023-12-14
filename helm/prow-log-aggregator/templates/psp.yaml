@@ -4,7 +4,7 @@ kind: PodSecurityPolicy
 metadata:
   name: log-aggregator
   labels:
-    app: log-aggregator
+    {{- include "labels.common" . | nindent 4 }}
 spec:
   privileged: false
   fsGroup:

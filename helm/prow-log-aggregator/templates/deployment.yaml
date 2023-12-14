@@ -4,7 +4,7 @@ metadata:
   namespace: test-infra
   name: log-aggregator
   labels:
-    app: log-aggregator
+    {{- include "labels.common" . | nindent 4 }}
 spec:
   replicas: 1
   strategy:
