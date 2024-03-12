@@ -26,6 +26,6 @@ spec:
             - --kubeconfig.namespace={{ .Values.kubeconfig.namespace }}
             - --server.listen.address=http://0.0.0.0:8000
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 10 }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
