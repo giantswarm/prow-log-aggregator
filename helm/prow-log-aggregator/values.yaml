@@ -18,7 +18,7 @@ securityContext:
   capabilities:
     drop:
     - ALL
-  
+
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 1000
