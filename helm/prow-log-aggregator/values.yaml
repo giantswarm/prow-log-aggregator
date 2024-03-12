@@ -11,8 +11,14 @@ project:
   branch: "[[ .Branch ]]"
   commit: "[[ .SHA ]]"
 
-securityContext: {}
-
+securityContext:
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+    - ALL
+  
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 1000
