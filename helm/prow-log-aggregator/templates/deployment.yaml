@@ -26,8 +26,6 @@ spec:
             - --kubeconfig.namespace={{ .Values.kubeconfig.namespace }}
             - --server.listen.address=http://0.0.0.0:8000
           securityContext:
-            allowPrivilegeEscalation: false
+            {{- toYaml .Values.securityContext | nindent 10 }}
       securityContext:
-        runAsUser: 1000
-        seccompProfile:
-          type: RuntimeDefault
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
